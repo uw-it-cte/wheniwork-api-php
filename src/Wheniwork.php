@@ -30,7 +30,7 @@ class Wheniwork
 
     private $api_token;
     private $api_endpoint = 'https://api.wheniwork.com/2';
-    private $api_headers  = [];
+    private $api_headers  = array();
     private $verify_ssl   = false;
 
     /**
@@ -39,7 +39,7 @@ class Wheniwork
      * @param string $api_token The user WhenIWork API token
      * @param array $options Allows you to set the `headers` and the `endpoint`
      */
-    function __construct($api_token = null, $options = [])
+    function __construct($api_token = null, $options = array())
     {
         $this->api_token = $api_token;
 
@@ -133,7 +133,7 @@ class Wheniwork
      * @param  array $headers Array of custom headers to be passed
      * @return array           Object of json decoded API response.
      */
-    public function get($method, $params = [], $headers = [])
+    public function get($method, $params = array(), $headers = array())
     {
         return $this->makeRequest($method, self::METHOD_GET, $params, $headers);
     }
@@ -146,7 +146,7 @@ class Wheniwork
      * @param  array $headers Array of custom headers to be passed
      * @return array           Object of json decoded API response.
      */
-    public function post($method, $params = [], $headers = [])
+    public function post($method, $params = array(), $headers = array())
     {
         return $this->makeRequest($method, self::METHOD_POST, $params, $headers);
     }
@@ -159,7 +159,7 @@ class Wheniwork
      * @param  array $headers Array of custom headers to be passed
      * @return array           Object of json decoded API response.
      */
-    public function create($method, $params = [], $headers = [])
+    public function create($method, $params = array(), $headers = array())
     {
         return $this->post($method, $params, $headers);
     }
@@ -172,7 +172,7 @@ class Wheniwork
      * @param  array $headers Array of custom headers to be passed
      * @return array           Object of json decoded API response.
      */
-    public function update($method, $params = [], $headers = [])
+    public function update($method, $params = array(), $headers = array())
     {
         return $this->makeRequest($method, self::METHOD_PUT, $params, $headers);
     }
@@ -185,7 +185,7 @@ class Wheniwork
      * @param  array $headers Array of custom headers to be passed
      * @return array           Object of json decoded API response.
      */
-    public function delete($method, $params = [], $headers = [])
+    public function delete($method, $params = array(), $headers = array())
     {
         return $this->makeRequest($method, self::METHOD_DELETE, $params, $headers);
     }
@@ -200,7 +200,7 @@ class Wheniwork
      * @param  array $headers Assoc array of custom headers to be passed
      * @return array           Assoc array of decoded result
      */
-    private function makeRequest($method, $request, $params = [], $headers = [])
+    private function makeRequest($method, $request, $params = array(), $headers = array())
     {
         $url = $this->getEndpoint() . '/' . $method;
 
@@ -219,7 +219,7 @@ class Wheniwork
             $headers['W-Token'] = $this->api_token;
         }
 
-        $headers_data = [];
+        $headers_data = array();
         foreach ($headers as $k => $v) {
             $headers_data[] = $k . ': ' . $v;
         }
@@ -232,7 +232,7 @@ class Wheniwork
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->verify_ssl);
 
-        if (in_array($request, [self::METHOD_POST, self::METHOD_PUT, self::METHOD_PATCH])) {
+        if (in_array($request, array(self::METHOD_POST, self::METHOD_PUT, self::METHOD_PATCH))) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
         }
 
@@ -253,14 +253,14 @@ class Wheniwork
      */
     public static function login($key, $email, $password)
     {
-        $params = [
+        $params = array(
             "username" => $email,
             "password" => $password,
-        ];
+        );
 
-        $headers = [
+        $headers = array(
             'W-Key' => $key
-        ];
+        );
 
         $login = new static();
         $response = $login->makeRequest("login", self::METHOD_POST, $params, $headers);
